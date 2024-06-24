@@ -1,0 +1,18 @@
+FROM node:20.14.0-bookworm AS build
+RUN useradd mine
+# This is for the GUI
+COPY tictotactotoe-ui /home/mine/tictotactotoe-ui
+
+WORKDIR /home/mine/tictotactotoe-ui/
+
+RUN npm install && \
+    npm run build
+
+FROM nginx:1.27.0-bookworm AS final
+
+RUN rm -rf /usr/share/nginx/html
+
+COPY --from=build /home/mine/tictotactotoe-ui/dist /usr/share/nginx/html
+
+RUN find /usr/share/nginx/html -type d -exec chmod 755 {} + && \
+    find /usr/share/nginx/html -type f -exec chmod 644 {} +

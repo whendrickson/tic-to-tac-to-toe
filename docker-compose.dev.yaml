@@ -1,0 +1,13 @@
+---
+version: '3'
+services:
+  dev:
+    build:
+      dockerfile: Dockerfile.dev
+    container_name: tictotactotoe
+    environment: []
+    ports:
+    - '443:443'
+    - "8000:8000"
+    volumes:
+    - ./:/home/mine

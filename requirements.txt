@@ -1,0 +1,9 @@
+coverage
+django
+django-cors-headers
+djangorestframework
+drf-spectacular
+JSON-log-formatter
+gunicorn
+uvicorn
+python-dotenv

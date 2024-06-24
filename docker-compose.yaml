@@ -1,0 +1,36 @@
+---
+name: ttt
+
+version: "3"
+services:
+  api:
+    build:
+      dockerfile: Dockerfile.api
+    container_name: api
+    environment:
+      DJANGO_ORIGINS01: "api"
+      DJANGO_SECRET_KEY: ""
+      DJANGO_DEBUG: ""
+    restart: always
+  ingress:
+    command:
+    - /bin/bash
+    - -c
+    - |
+      openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/CN=localhost' -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt;
+      nginx;
+      tail -f /var/log/nginx/error.log
+    image: nginx:1.27.0-bookworm
+    ports:
+    - "443:443"
+    volumes:
+    - "./nginx/nginx.ingress.template:/etc/nginx/nginx.conf:ro"
+    restart: always
+  ui:
+    build:
+      dockerfile: Dockerfile.ui
+    container_name: ui
+    environment: {}
+    restart: always
+    volumes:
+    - "./nginx/nginx.ui.template:/etc/nginx/nginx.conf:ro"
