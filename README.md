@@ -1,7 +1,11 @@
 # Rest Tic-Tac-Toe
 
 ## Overview
-
+During one of my interviews rather than having a 1337 code challenge, I was asked to build a rest api to play Tic-Tac-Toe.
+After the interview I looked around and saw this was a standard coding practice to learn a language. Granted I've been 
+using python for a number of years, I thought it was still a lot of fun so wanted to finish where I left off and clean up
+a bit. So this project was built without the help of AI such as Copilot. I also took it to the next step of building a 
+frontend using Vue as that is the current frontend framework that I have been using. 
 
 ## Variables
 There is a couple different ways to pass variables into the code.
@@ -10,13 +14,13 @@ method used when running the containers in the prod.
 The other way is using a .env file that can be created in
 the root of the project directory.
 ###
-| Variable | Description                                                |
-|----------|------------------------------------------------------------|
-|          |                                                            |
-|          |                                                            |
-|          |                                                            |
-|          |                                                            |
-|          |                                                            |
+| Variable          | Description |
+|-------------------|-------------|
+| API_LOGGER_LEVEL  |             |
+| DJANGO_DEBUG      |             |
+| DJANGO_ORIGINS    |             |
+| DJANGO_SECRET_KEY |             |
+
 
 ## Docker
 * Docker installed wih Docker compose
@@ -83,10 +87,9 @@ coverage report
 * Add helm chart for fun
 * Move away from sqlite and move to postgres
 * Setup more logging
-* Added APM
+* Add APM
 * Look into maybe adding synthetic monitoring
 * Break out the UI into its own repo
-* Look at django-environ for settings
 
 ## Contributing
 Rawr!
