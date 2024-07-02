@@ -28,7 +28,7 @@ class BaseModel(models.Model):
 
 class Games(BaseModel):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    name = models.CharField(max_length=100, blank=False, default="")
+    name = models.CharField(max_length=100, blank=False)
     state = models.CharField(max_length=16, blank=False, default="turn_x")
     player_o = models.ForeignKey(User, to_field="id", related_name="player_o", on_delete=models.DO_NOTHING, null=True)
     player_x = models.ForeignKey(User, to_field="id", related_name="player_x", on_delete=models.DO_NOTHING, null=True)

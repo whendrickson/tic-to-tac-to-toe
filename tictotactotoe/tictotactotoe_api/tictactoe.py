@@ -18,6 +18,9 @@ from django.contrib.auth.models import User as UserModel
 from .models import Games as GamesModel
 from .models import Moves as MovesModel
 from .serializers import GameSerializer, MoveSerializer
+import logging
+
+log = logging.getLogger("api")
 
 
 def _all_same(items: list) -> bool:
@@ -123,8 +126,8 @@ def game_get(game_id: str) -> dict:
         return serializer.data
     except GamesModel.DoesNotExist:
         return {}
-    except Exception:
-        # this is not practice but will not boil the ocean currently
+    except Exception as e:
+        log.info(f"game_get errored while getting GamesModel: {e}")
         return {}
 
 
@@ -174,8 +177,8 @@ def game_post(game_id: str, username: str, data: dict):
     if not game_state.startswith("turn_"):
         if game_state == "winner_x":
             return "error", f"Game is over! Player X is the winner!", {}
-        if game_state == "winner_y":
-            return "error", f"Game is over! Player Y is the winner!", {}
+        if game_state == "winner_o":
+            return "error", f"Game is over! Player O is the winner!", {}
         return "error", f"Game is over! Ended in Tie!", {}
 
     if not valid_move(x, y):
@@ -303,6 +306,7 @@ def get_winner(game_id: str) -> str:
     if diagonal is not None:
         return diagonal
     if _check_full(moves):
+        log.debug("We have a tie!")
         return "tie"
 
 
