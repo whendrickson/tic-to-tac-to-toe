@@ -14,7 +14,17 @@ http {
         types_hash_max_size 2048;
         include /etc/nginx/mime.types;
         default_type application/octet-stream;
-        ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+        ## Hide Nginx version ##
+        server_tokens off;
+        ## Security headers for Nginx ##
+        add_header Strict-Transport-Security "max-age=15768000" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Xss-Protection "1; mode=block" always;
+        add_header Referrer-Policy  strict-origin-when-cross-origin;
+        add_header Feature-policy "accelerometer 'none'; camera 'none'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; payment 'none'; usb 'none'";
+        add_header Content-Security-Policy "default-src 'self';" always;
+        ssl_protocols TLSv1.2 TLSv1.3;
         ssl_prefer_server_ciphers on;
         access_log /var/log/nginx/access.log;
         error_log /var/log/nginx/error.log;
