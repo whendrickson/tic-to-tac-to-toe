@@ -1,3 +1,5 @@
+bandit
+black
 coverage
 django
 django-cors-headers
@@ -6,4 +8,5 @@ drf-spectacular
 JSON-log-formatter
 gunicorn
 uvicorn
+pylint
 python-dotenv

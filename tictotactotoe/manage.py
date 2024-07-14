@@ -3,14 +3,15 @@
 import os
 import sys
 from django.core.management.commands.runserver import Command as RunServer
+from tictotactotoe.settings import RUN_SERVER_ADDR, RUN_SERVER_PORT
 
-RunServer.default_addr = "0.0.0.0"
-RunServer.default_port = "8000"
+RunServer.default_addr = RUN_SERVER_ADDR
+RunServer.default_port = RUN_SERVER_PORT
 
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tictotactotoe.settings')
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tictotactotoe.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -22,5 +23,5 @@ def main():
     execute_from_command_line(sys.argv)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

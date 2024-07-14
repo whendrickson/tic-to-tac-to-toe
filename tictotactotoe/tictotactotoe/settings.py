@@ -16,6 +16,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+RUN_SERVER_ADDR = os.environ.get("RUN_SERVER_ADDR", "0.0.0.0")  # nosec B104
+RUN_SERVER_PORT = os.environ.get("RUN_SERVER_PORT", "8000")
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -35,12 +39,12 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     "rest_framework",
     "tictotactotoe_api",
     "corsheaders",
@@ -63,90 +67,91 @@ SPECTACULAR_SETTINGS = {
         "url": "",
     },
     "LICENSE": "",
-    "VERSION": "0.0.1"
+    "VERSION": "0.0.1",
 }
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SAMESITE = "None"
 CORS_ALLOW_METHODS = [
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
 ]
 TRUSTED_ORIGINS = [
     "https://127.0.0.1",
-    'http://127.0.0.1:5173',
-    'http://localhost:5173',
-    'https://127.0.0.1:5173',
-    'https://localhost:5173',
-    'http://localhost',
-    'https://localhost',
-    'http://127.0.0.1:8000',
+    "http://127.0.0.1:5173",
+    "http://localhost:5173",
+    "https://127.0.0.1:5173",
+    "https://localhost:5173",
+    "http://localhost",
+    "https://localhost",
+    "http://127.0.0.1:8000",
 ]
 for v in os.environ:
-    if v.startswith("DJANGO_ORIGINS"):
+    if v.startswith("DJANGO_ORIGINS") and os.environ[v] != "":
         for schema in ["http", "https"]:
-            TRUSTED_ORIGINS.append(f"{schema}://{os.environ[v]}")
+            print(f"{schema}://{os.environ[v]}")
+            # TRUSTED_ORIGINS.append(f"{schema}://{os.environ[v]}")
 CORS_ALLOWED_ORIGINS = TRUSTED_ORIGINS
 CSRF_TRUSTED_ORIGINS = TRUSTED_ORIGINS
 
-ROOT_URLCONF = 'tictotactotoe.urls'
+ROOT_URLCONF = "tictotactotoe.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'tictotactotoe.wsgi.application'
+WSGI_APPLICATION = "tictotactotoe.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -156,16 +161,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -173,9 +178,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -185,18 +190,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "json": {"()": "json_log_formatter.JSONFormatter"}
+        "json": {
+            "()": "json_log_formatter.JSONFormatter",
+        }
     },
     "handlers": {
         "console": {
@@ -205,7 +212,15 @@ LOGGING = {
         }
     },
     "loggers": {
-        "api": {"handlers": ["console"], "level": os.environ.get("API_LOGGER_LEVEL", "INFO"), "propagate": True, },
-        "django": {"handlers": ["console"], "level": "ERROR", "propagate": True, },
+        "api": {
+            "handlers": ["console"],
+            "level": os.environ.get("API_LOGGER_LEVEL", "INFO"),
+            "propagate": True,
+        },
+        "django": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": True,
+        },
     },
 }

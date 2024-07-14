@@ -14,44 +14,65 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from django.http import JsonResponse
 
 
 def custom400(request, exception=None):
+    """
+    Json Response HTTP 400
+    """
+
     return JsonResponse(
-        data={"error": f"Bad Request"},
-        status=400
+        data={
+            "error": "Bad Request",
+        },
+        status=400,
     )
 
 
 def custom403(request, exception=None):
+    """
+    Json Response HTTP 403
+    """
+
     return JsonResponse(
         data={
             "data": {},
             "status": "error",
-            "message": "Permission Denied"
+            "message": "Permission Denied",
         },
-        status=403
+        status=403,
     )
 
 
 def custom404(request, exception=None):
+    """
+    Json Response HTTP 404
+    """
+
     return JsonResponse(
-        data={"error": f"The resource at {request.path} with method {request.method} was not found."},
-        status=404
+        data={
+            "error": f"The resource at {request.path} with method {request.method} was not found.",
+        },
+        status=404,
     )
 
 
 def custom500(request, exception=None):
+    """
+    Json Response HTTP 500
+    """
+
     return JsonResponse(
         data={
             "data": {},
             "status": "error",
-            "message": "Internal Server Error"
+            "message": "Internal Server Error",
         },
-        status=500
+        status=500,
     )
 
 
@@ -61,6 +82,6 @@ handler404 = custom404
 handler500 = custom500
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     path("api/", include("tictotactotoe_api.urls")),
 ]

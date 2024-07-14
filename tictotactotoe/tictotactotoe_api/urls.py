@@ -15,21 +15,52 @@ limitations under the License.
 """
 
 from django.urls import path
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.urlpatterns import format_suffix_patterns
 from .views import viewtictactoe
 from .views import viewauth
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urlpatterns = [
-    path("v1/games", viewtictactoe.GamesView.as_view()),
-    path("v1/games/<str:game_id>", viewtictactoe.GameView.as_view()),
-    path("v1/games/<str:game_id>/moves", viewtictactoe.MovesView.as_view()),
-    path("v1/login", viewauth.LoginApiView.as_view()),
-    path("v1/logout", viewauth.LogoutApiView.as_view()),
-    path("v1/register", viewauth.RegisterView.as_view()),
-    path("v1/who", viewauth.WhoView.as_view()),
-    path("schema/", SpectacularAPIView.as_view(), name="schema"),
-    path("docs/", SpectacularSwaggerView.as_view(url_name="schema", ), name="swagger-ui"),
+    path(
+        "v1/games",
+        viewtictactoe.GamesView.as_view(),
+    ),
+    path(
+        "v1/games/<str:game_id>",
+        viewtictactoe.GameView.as_view(),
+    ),
+    path(
+        "v1/games/<str:game_id>/moves",
+        viewtictactoe.MovesView.as_view(),
+    ),
+    path(
+        "v1/login",
+        viewauth.LoginApiView.as_view(),
+    ),
+    path(
+        "v1/logout",
+        viewauth.LogoutApiView.as_view(),
+    ),
+    path(
+        "v1/register",
+        viewauth.RegisterView.as_view(),
+    ),
+    path(
+        "v1/who",
+        viewauth.WhoView.as_view(),
+    ),
+    path(
+        "schema/",
+        SpectacularAPIView.as_view(),
+        name="schema",
+    ),
+    path(
+        "docs/",
+        SpectacularSwaggerView.as_view(
+            url_name="schema",
+        ),
+        name="swagger-ui",
+    ),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

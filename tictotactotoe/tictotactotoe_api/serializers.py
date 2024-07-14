@@ -15,14 +15,22 @@ limitations under the License.
 """
 
 from rest_framework import serializers
-from .models import Games, Moves
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
+from .models import Games, Moves
 
 
 class MoveSerializer(serializers.ModelSerializer):
+    """
+    Moves that happened in a Tic-Tac-Toe game.
+    """
+
     class Meta:
+        """
+        Move meta data.
+        """
+
         model = Moves
         fields = [
             "player",
@@ -32,55 +40,103 @@ class MoveSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """
+    Using built-in Django users for game users.
+    """
+
     email = serializers.EmailField(
-        required=True,
-        validators=[UniqueValidator(queryset=User.objects.all())]
+        required=True, validators=[UniqueValidator(queryset=User.objects.all())]
     )
 
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    password2 = serializers.CharField(write_only=True, required=True)
+    password = serializers.CharField(
+        write_only=True,
+        required=True,
+        validators=[validate_password],
+    )
+    password2 = serializers.CharField(
+        write_only=True,
+        required=True,
+    )
 
     class Meta:
+        """
+        User meta data.
+        """
+
         model = User
-        fields = ('id', 'username', 'password', 'password2', 'email', 'first_name', 'last_name')
+        fields = (
+            "id",
+            "username",
+            "password",
+            "password2",
+            "email",
+            "first_name",
+            "last_name",
+        )
         extra_kwargs = {
-            'first_name': {'required': True},
-            'last_name': {'required': True}
+            "first_name": {"required": True},
+            "last_name": {"required": True},
         }
 
     def validate(self, attrs):
-        if attrs['password'] != attrs['password2']:
-            raise serializers.ValidationError({"password": "Password fields didn't match."})
+        if attrs["password"] != attrs["password2"]:
+            raise serializers.ValidationError(
+                {
+                    "password": "Password fields didn't match.",
+                }
+            )
 
         return attrs
 
     def create(self, validated_data):
         user = User.objects.create(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name']
+            username=validated_data["username"],
+            email=validated_data["email"],
+            first_name=validated_data["first_name"],
+            last_name=validated_data["last_name"],
         )
 
-        user.set_password(validated_data['password'])
+        user.set_password(validated_data["password"])
         user.save()
 
         return user
 
 
 class GameSerializer(serializers.ModelSerializer):
+    """
+    Tic-Tac-Toe games.
+    """
+
     player_o = UserSerializer(read_only=True)
     player_x = UserSerializer(read_only=True)
 
     class Meta:
+        """
+        Game meta data.
+        """
+
         model = Games
-        fields = ("id", "name", "state", "player_o", "player_x")
+        fields = (
+            "id",
+            "name",
+            "state",
+            "player_o",
+            "player_x",
+        )
 
 
 class LoginSerializer(serializers.Serializer):
+    # pylint: disable=W0223
+    """
+    User logging into the application.
+    """
+
     username = serializers.CharField()
     password = serializers.CharField()
 
 
 class LogoutSerializer(serializers.Serializer):
-    pass
+    # pylint: disable=W0223
+    """
+    User logging out of the application.
+    """

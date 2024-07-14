@@ -14,11 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import logging
 from django.contrib.auth.models import User as UserModel
 from .models import Games as GamesModel
 from .models import Moves as MovesModel
 from .serializers import GameSerializer, MoveSerializer
-import logging
 
 log = logging.getLogger("api")
 
@@ -127,7 +127,7 @@ def game_get(game_id: str) -> dict:
     except GamesModel.DoesNotExist:
         return {}
     except Exception as e:
-        log.info(f"game_get errored while getting GamesModel: {e}")
+        log.info("game_get errored while getting GamesModel: %s", str(e))
         return {}
 
 
@@ -160,11 +160,13 @@ def game_post(game_id: str, username: str, data: dict):
     if player is None:
         return "error", f"Sorry {username} is not apart of this game!", {}
 
-    serializer = MoveSerializer(data={
-        "x": data.get("x"),
-        "y": data.get("y"),
-        "player": player,
-    })
+    serializer = MoveSerializer(
+        data={
+            "x": data.get("x"),
+            "y": data.get("y"),
+            "player": player,
+        },
+    )
     if not serializer.is_valid():
         # todo: make serializer.errors pretty!
         return "error", str(serializer.errors), {}
@@ -176,19 +178,27 @@ def game_post(game_id: str, username: str, data: dict):
     game_state = getattr(game, "state")
     if not game_state.startswith("turn_"):
         if game_state == "winner_x":
-            return "error", f"Game is over! Player X is the winner!", {}
+            return "error", "Game is over! Player X is the winner!", {}
         if game_state == "winner_o":
-            return "error", f"Game is over! Player O is the winner!", {}
-        return "error", f"Game is over! Ended in Tie!", {}
+            return "error", "Game is over! Player O is the winner!", {}
+        return "error", "Game is over! Ended in Tie!", {}
 
     if not valid_move(x, y):
-        return "error", "Move was not valid. Please try a different move!", {}
+        return (
+            "error",
+            "Move was not valid. Please try a different move!",
+            {},
+        )
 
     other_player = "x"
     if player == "x":
         other_player = "o"
     if f"turn_{player}" != getattr(game, "state"):
-        return "error", f"It is not your turn {player}! Sorry, please wait for {other_player}.", {}
+        return (
+            "error",
+            f"It is not your turn {player}! Sorry, please wait for {other_player}.",
+            {},
+        )
 
     previous_move = MovesModel.objects.filter(
         game=game,
@@ -245,7 +255,16 @@ def games_post(data: dict):
     return "ok", "Game was created!", serializer.data
 
 
-def game_put(game_id, user_id, data):
+def game_put(game_id: str, user_id: str, data: dict):
+    """
+    Seat the players at the game board.
+
+    :param game_id:
+    :param user_id:
+    :param data:
+    :return:
+    """
+
     game = GamesModel.objects.get(id=game_id)
     user = UserModel.objects.get(id=user_id)
 

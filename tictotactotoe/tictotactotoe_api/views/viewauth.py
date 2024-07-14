@@ -1,3 +1,19 @@
+"""
+Copyright 2024 Wes Hendrickson
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from rest_framework import generics
@@ -8,15 +24,27 @@ from ..serializers import UserSerializer, LoginSerializer, LogoutSerializer
 
 
 class LoginApiView(TicToTacToToeAPIView):
-    permission_classes = (AllowAny, )
+    """
+    View for logging into the application.
+    """
+
+    permission_classes = (AllowAny,)
     serializer_class = LoginSerializer
 
     def post(self, request, **kwargs):
+        """
+        Logging into the application.
+
+        :param request:
+        :param kwargs:
+        :return:
+        """
+
         user = authenticate(
             request,
             **{
                 "username": request.data.get("username"),
-                "password": request.data.get("password")
+                "password": request.data.get("password"),
             },
         )
         if user is None:
@@ -26,7 +54,7 @@ class LoginApiView(TicToTacToToeAPIView):
                 status_message="error",
             )
         login(request, user)
-        self.log.debug(f"{user} - Valid username/password combination.")
+        self.log.debug("%s - Valid username/password combination.", user)
         return self._response(
             message="Success kid is successful!",
             response_code=status.HTTP_202_ACCEPTED,
@@ -35,10 +63,22 @@ class LoginApiView(TicToTacToToeAPIView):
 
 
 class LogoutApiView(TicToTacToToeAPIView):
-    permission_classes = (IsAuthenticated, )
+    """
+    View for logging out of the application.
+    """
+
+    permission_classes = (IsAuthenticated,)
     serializer_class = LogoutSerializer
 
     def post(self, request, **kwargs):
+        """
+        Logging out of the application.
+
+        :param request:
+        :param kwargs:
+        :return:
+        """
+
         user = str(request.user)
         logout(request)
         message = f"User {user} has logged out successfully! bye-bye."
@@ -51,16 +91,32 @@ class LogoutApiView(TicToTacToToeAPIView):
 
 
 class RegisterView(generics.CreateAPIView):
+    """
+    View for registering a user.
+    """
+
     queryset = User.objects.all()
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     serializer_class = UserSerializer
 
 
 class WhoView(TicToTacToToeAPIView):
+    """
+    Authenticated user to see who they are.
+    """
+
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
     def get(self, request, **kwargs):
+        """
+        Get current user.
+
+        :param request:
+        :param kwargs:
+        :return:
+        """
+
         u = User.objects.get(id=request.user.id)
         serializer = UserSerializer(u, many=False)
         return self._response(
