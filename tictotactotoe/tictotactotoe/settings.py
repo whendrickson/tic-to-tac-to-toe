@@ -31,7 +31,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True if os.environ.get("DJANGO_DEBUG", "").lower() == "true" else False
+DEBUG = os.environ.get("DJANGO_DEBUG", "").lower() == "true"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -106,23 +106,8 @@ CORS_ALLOW_METHODS = [
     "POST",
     "PUT",
 ]
-TRUSTED_ORIGINS = [
-    "https://127.0.0.1",
-    "http://127.0.0.1:5173",
-    "http://localhost:5173",
-    "https://127.0.0.1:5173",
-    "https://localhost:5173",
-    "http://localhost",
-    "https://localhost",
-    "http://127.0.0.1:8000",
-]
-for v in os.environ:
-    if v.startswith("DJANGO_ORIGINS") and os.environ[v] != "":
-        for schema in ["http", "https"]:
-            print(f"{schema}://{os.environ[v]}")
-            # TRUSTED_ORIGINS.append(f"{schema}://{os.environ[v]}")
-CORS_ALLOWED_ORIGINS = TRUSTED_ORIGINS
-CSRF_TRUSTED_ORIGINS = TRUSTED_ORIGINS
+CORS_ALLOWED_ORIGINS = os.environ.get("DJANGO_ORIGINS", "").split(",")
+CSRF_TRUSTED_ORIGINS = os.environ.get("DJANGO_ORIGINS", "").split(",")
 
 ROOT_URLCONF = "tictotactotoe.urls"
 
