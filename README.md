@@ -14,13 +14,14 @@ method used when running the containers in the prod.
 The other way is using a .env file that can be created in
 the root of the project directory.
 ###
-| Variable          | Description |
-|-------------------|-------------|
-| API_LOGGER_LEVEL  |             |
-| DJANGO_DEBUG      |             |
-| DJANGO_ORIGINS    |             |
-| DJANGO_SECRET_KEY |             |
-
+| Variable          | Required | Default | Description                                                                                           |
+|-------------------|----------|---------|-------------------------------------------------------------------------------------------------------|
+| API_LOGGER_LEVEL  | False    | INFO    | Logging level for API                                                                                 |
+| DJANGO_DEBUG      | False    | False   | A boolean for Django that turns on/off debug mode                                                     |
+| DJANGO_ORIGINS    | False    |         | A comma-delimited list of trusted origins for unsafe requests (e.g. POST)                             |
+| DJANGO_SECRET_KEY | False    |         | Django uses this to provide cryptographic signing, and should be set to a unique, unpredictable value |
+| RUN_SERVER_ADDR   | False    | 0.0.0.0 | Development web server listening address                                                              |
+| RUN_SERVER_PORT   | False    | 8000    | Development web server listening port                                                                 |
 
 ## Docker
 * Docker installed wih Docker compose
@@ -38,7 +39,7 @@ Because hot-reload can get itself stuck enter the container
 and execute the process for npm and django:
 ```
 docker exec -it tictotactotoe bash
-npm run serve --prefix /home/mine/tictotactotoe-ui
+npm run dev --prefix /home/mine/tictotactotoe-ui
 gunicorn --chdir /home/mine/tictotactotoe --reload tictotactotoe.wsgi:application
 ```
 
