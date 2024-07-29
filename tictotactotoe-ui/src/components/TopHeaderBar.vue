@@ -31,10 +31,21 @@
                 Tic-To-Tac-To-Toe
               </a>
               <ul class="dropdown-menu dropdown-menu-dark">
-                <li><a class="dropdown-item" href="#" @click="pageChange('home')">Home</a></li>
-                <li><a class="dropdown-item" href="#" @click="pageChange('about')">About</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#" @click="pageChange('logout')">Logout</a></li>
+                <li v-if="user">
+                  <a class="dropdown-item" href="#" @click="pageChange('home')">Home</a>
+                </li>
+                <li v-else>
+                  <a class="dropdown-item" href="#" @click="pageChange('login')">Login</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" @click="pageChange('about')">About</a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" @click="pageChange('logout')">Logout</a>
+                </li>
               </ul>
             </li>
           </ul>
