@@ -20,81 +20,96 @@
     <div>
       <h1>Please fill out this form to Register for Tic-To-Tac-To-Toe!!!</h1>
       <div class="container container-lg">
-        <div class="row">
-          <div class="col" />
-          <div class="col">
-            <!-- todo: make this a form with checks rather than just passing to backend -->
-            <!-- Username -->
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="inputGroup-username">Username</span>
-              <input
-                type="text"
-                class="form-control"
-                aria-label="input-username"
-                aria-describedby="inputGroup-username"
-                v-model="username"
-              />
+        <form autocomplete="off" @submit.prevent="register">
+          <div class="row">
+            <div class="col" />
+            <div class="col">
+              <!-- Username -->
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-username">Username</span>
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-label="input-username"
+                  aria-describedby="inputGroup-username"
+                  v-model="username"
+                  pattern="^[a-zA-Z\d\.]{6,30}$"
+                  oninvalid="this.setCustomValidity('Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed. Must be between 6 and 30 characters long.')"
+                  onchange="try{setCustomValidity('')}catch(e){}"
+                  oninput="setCustomValidity(' ')"
+                  required
+                />
+              </div>
+              <!-- Password -->
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-password">Password</span>
+                <input
+                  id="password"
+                  type="password"
+                  class="form-control"
+                  aria-label="input-password"
+                  aria-describedby="inputGroup-password"
+                  v-model="password"
+                  required
+                  :onChange="verifyPass()"
+                />
+              </div>
+              <!-- Password2 -->
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-password2">Confirm</span>
+                <input
+                  id="password2"
+                  type="password"
+                  class="form-control"
+                  aria-label="input-password2"
+                  aria-describedby="inputGroup-password2"
+                  v-model="password2"
+                  required
+                  :onChange="verifyPass()"
+                />
+              </div>
+              <!-- Email -->
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-email">Email</span>
+                <input
+                  type="email"
+                  class="form-control"
+                  aria-label="input-email"
+                  aria-describedby="inputGroup-email"
+                  v-model="email"
+                  required
+                />
+              </div>
+              <!-- First Name -->
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-first">First Name</span>
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-label="input-first"
+                  aria-describedby="inputGroup-first"
+                  v-model="firstName"
+                  required
+                />
+              </div>
+              <!-- Last Name -->
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-last">Last Name</span>
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-label="input-last"
+                  aria-describedby="inputGroup-last"
+                  v-model="lastName"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-success me-1">Register</button>
+              <button type="button" class="btn btn-secondary me-1" @click="reset">Cancel</button>
             </div>
-            <!-- Password -->
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="inputGroup-password">Password</span>
-              <input
-                type="password"
-                class="form-control"
-                aria-label="input-password"
-                aria-describedby="inputGroup-password"
-                v-model="password"
-              />
-            </div>
-            <!-- Password2 -->
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="inputGroup-password2">Confirm</span>
-              <input
-                type="password"
-                class="form-control"
-                aria-label="input-password2"
-                aria-describedby="inputGroup-password2"
-                v-model="password2"
-              />
-            </div>
-            <!-- Email -->
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="inputGroup-email">Email</span>
-              <input
-                type="text"
-                class="form-control"
-                aria-label="input-email"
-                aria-describedby="inputGroup-email"
-                v-model="email"
-              />
-            </div>
-            <!-- First Name -->
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="inputGroup-first">First Name</span>
-              <input
-                type="text"
-                class="form-control"
-                aria-label="input-first"
-                aria-describedby="inputGroup-first"
-                v-model="firstName"
-              />
-            </div>
-            <!-- Last Name -->
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="inputGroup-last">Last Name</span>
-              <input
-                type="text"
-                class="form-control"
-                aria-label="input-last"
-                aria-describedby="inputGroup-last"
-                v-model="lastName"
-              />
-            </div>
-            <button type="button" class="btn btn-success me-1" @click="register">Register</button>
-            <button type="button" class="btn btn-secondary me-1" @click="reset">Cancel</button>
+            <div class="col" />
           </div>
-          <div class="col" />
-        </div>
+        </form>
       </div>
     </div>
   </div>
@@ -143,6 +158,23 @@ export default {
       this.email = undefined;
       this.firstName = undefined;
       this.last_name = undefined;
+    },
+    verifyPass() {
+      const docPassword = document.getElementById('password');
+      const docPassword2 = document.getElementById('password2');
+      if (docPassword === null || this.password === undefined) { return; }
+      if (docPassword2 === null || this.password2 === undefined) { return; }
+      if (this.password === this.password2) {
+        docPassword.classList.remove('is-invalid');
+        docPassword.classList.add('is-valid');
+        docPassword2.classList.remove('is-invalid');
+        docPassword2.classList.add('is-valid');
+      } else {
+        docPassword.classList.remove('is-valid');
+        docPassword.classList.add('is-invalid');
+        docPassword2.classList.remove('is-valid');
+        docPassword2.classList.add('is-invalid');
+      }
     },
   },
   mounted() {},
