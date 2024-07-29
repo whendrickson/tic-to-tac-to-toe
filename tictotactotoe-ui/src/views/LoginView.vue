@@ -20,38 +20,40 @@
     <div>
       <h1>Welcome To Tic-To-Tac-To-Toe!!!</h1>
       <div class="container container-lg">
-        <div class="row">
-          <div class="col" />
-          <div class="col">
-            <!-- Username -->
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="inputGroup-username">Username</span>
-              <input
-                type="text"
-                class="form-control"
-                aria-label="input-username"
-                aria-describedby="inputGroup-username"
-                v-model="username"
-              />
+        <form autocomplete="off" @submit.prevent="login">
+          <div class="row">
+            <div class="col" />
+            <div class="col">
+              <!-- Username -->
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-username">Username</span>
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-label="input-username"
+                  aria-describedby="inputGroup-username"
+                  v-model="username"
+                />
+              </div>
+              <!-- Username -->
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-password">Password</span>
+                <input
+                  type="password"
+                  class="form-control"
+                  aria-label="input-password"
+                  aria-describedby="inputGroup-password"
+                  v-model="password"
+                />
+              </div>
+              <button type="submit" class="btn btn-success me-1">Submit</button>
+              <button type="button" class="btn btn-secondary me-1" @click="reset">Cancel</button>
+              <button type="button" class="btn btn-warning me-1" @click="forgot">Forgot Password</button>
+              <button type="button" class="btn btn-primary me-1" @click="register">Register!</button>
             </div>
-            <!-- Username -->
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="inputGroup-password">Password</span>
-              <input
-                type="password"
-                class="form-control"
-                aria-label="input-password"
-                aria-describedby="inputGroup-password"
-                v-model="password"
-              />
-            </div>
-            <button type="button" class="btn btn-success me-1" @click="login">Submit</button>
-            <button type="button" class="btn btn-secondary me-1" @click="reset">Cancel</button>
-            <button type="button" class="btn btn-warning me-1" @click="forgot">Forgot Password</button>
-            <button type="button" class="btn btn-primary me-1" @click="register">Register!</button>
+            <div class="col" />
           </div>
-          <div class="col" />
-        </div>
+        </form>
       </div>
     </div>
   </div>
