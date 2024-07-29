@@ -80,13 +80,22 @@ export default class BaseService {
       403: 'Forbidden',
       404: 'Not Found',
       405: 'Method Not Allowed',
+      502: 'Bad Gateway',
     };
     let detailError = error.response.data.message;
+    let responseData = error.response.data;
     if (detailError === undefined) {
       detailError = httpStatusCodes[error.response.status];
     }
+    if (typeof error.response.data === 'string') {
+      responseData = {
+        data: 'No Data',
+        status: 'Error Status',
+        message: 'Something Went Wrong!',
+      };
+    }
     return {
-      data: error.response.data,
+      data: responseData,
       message: detailError,
       status: error.response.status,
     };
