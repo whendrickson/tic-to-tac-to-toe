@@ -157,14 +157,14 @@ export default {
       this.password2 = undefined;
       this.email = undefined;
       this.firstName = undefined;
-      this.last_name = undefined;
+      this.lastName = undefined;
     },
     verifyPass() {
       const docPassword = document.getElementById('password');
       const docPassword2 = document.getElementById('password2');
-      if (docPassword === null || this.password === undefined) { return; }
-      if (docPassword2 === null || this.password2 === undefined) { return; }
-      if (this.password === this.password2) {
+      if (docPassword === null || this.password === undefined || this.password === '') { return; }
+      if (docPassword2 === null || this.password2 === undefined || this.password2 === '') { return; }
+      if (this.password === this.password2 && this.password.length > 7) {
         docPassword.classList.remove('is-invalid');
         docPassword.classList.add('is-valid');
         docPassword2.classList.remove('is-invalid');
