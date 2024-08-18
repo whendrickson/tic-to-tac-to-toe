@@ -15,6 +15,7 @@ limitations under the License.
 """
 
 from rest_framework import serializers
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
@@ -82,11 +83,64 @@ class UserSerializer(serializers.ModelSerializer):
         if attrs["password"] != attrs["password2"]:
             raise serializers.ValidationError(
                 {
-                    "password": "Password fields didn't match.",
+                    "password": "Password fields didn't match.",  # probably want to look at owasp
+                }
+            )
+        return attrs
+
+    @staticmethod
+    def validate_email(value):
+        """
+        Validate the incoming email address for a user
+
+        :param value: email address
+        :return: lowered email address
+        """
+
+        email = value.lower()
+        try:
+            User.objects.get(email=email)
+        except ObjectDoesNotExist:
+            pass  # awesome the email isn't currently in the db
+        else:
+            raise serializers.ValidationError(
+                {
+                    "email": "email is not valid",  # probably want to look at owasp
+                }
+            )
+        return email
+
+    @staticmethod
+    def validate_username(value):
+        """
+        Validate the incoming username for a user
+
+        :param value: username
+        :return: lowered username
+        """
+
+        username = value.lower()
+
+        if 5 < len(username) < 31:
+            pass  # Username is 6–30 characters long
+        else:
+            raise serializers.ValidationError(
+                {
+                    "username": "username is not valid",  # probably want to look at owasp
                 }
             )
 
-        return attrs
+        try:
+            User.objects.get(username=username)
+        except ObjectDoesNotExist:
+            pass  # awesome the username isn't currently in the db
+        else:
+            raise serializers.ValidationError(
+                {
+                    "username": "username is not valid",  # probably want to look at owasp
+                }
+            )
+        return username
 
     def create(self, validated_data):
         user = User.objects.create(
